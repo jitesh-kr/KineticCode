@@ -22,6 +22,13 @@ final class CameraManager: NSObject, ObservableObject, @unchecked Sendable, AVCa
         setupCamera()
     }
 
+    // Preview Layer for UI
+    var previewLayer: AVCaptureVideoPreviewLayer {
+        let layer = AVCaptureVideoPreviewLayer(session: captureSession)
+        layer.videoGravity = .resizeAspectFill
+        return layer
+    }
+
     private func setupCamera() {
         // Setup input device (Front Camera)
         guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front),

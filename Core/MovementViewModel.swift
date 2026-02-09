@@ -13,7 +13,7 @@ class MovementViewModel: ObservableObject {
     @Published var currentArmAngle: Double = 0.0
     @Published var maxAngleAchieved: Double = 0.0
     
-    private let cameraManager = CameraManager()
+    let cameraManager = CameraManager()
     
     init() {
         cameraManager.onPoseDetected = { [weak self] joints in

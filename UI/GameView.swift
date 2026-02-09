@@ -21,27 +21,35 @@ struct GameView: View {
     }
 
     var body: some View {
-        VStack {
-            Text("Right Arm ROM: \(Int(viewModel.currentArmAngle))°")
-                .font(.headline)
-                .padding()
-
-            // SpriteKit View
-            SpriteView(scene: scene)
-                .frame(width: 300, height: 400)
-                .cornerRadius(12)
-                .onChange(of: viewModel.currentArmAngle) { newValue in
-                    scene.updateWingPosition(angle: newValue)
-                }
+        ZStack {
+            // Camera Preview Layer
+            CameraPreview(cameraManager: viewModel.cameraManager)
+                .ignoresSafeArea()
             
-            Button("End Session") {
-                showReport = true
+            VStack {
+                Text("Right Arm ROM: \(Int(viewModel.currentArmAngle))°")
+                    .font(.headline)
+                    .padding()
+                    .background(.ultraThinMaterial)
+                    .cornerRadius(10)
+
+                // SpriteKit View (Transparent)
+                SpriteView(scene: scene, options: [.allowsTransparency])
+                    .frame(width: 300, height: 400)
+                    .background(Color.clear)
+                    .onChange(of: viewModel.currentArmAngle) { newValue in
+                        scene.updateWingPosition(angle: newValue)
+                    }
+                
+                Button("End Session") {
+                    showReport = true
+                }
+                .buttonStyle(.borderedProminent)
+                .padding()
             }
-            .buttonStyle(.borderedProminent)
-            .padding()
         }
         .sheet(isPresented: $showReport) {
-            ReportView(maxAngle: viewModel.maxAngleAchieved)
+            ReportView(sessionMaxAngle: viewModel.maxAngleAchieved)
         }
     }
 }

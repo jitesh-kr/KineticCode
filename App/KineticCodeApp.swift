@@ -10,14 +10,18 @@ import SwiftUI
 @main
 struct KineticCodeApp: App {
     @AppStorage("isOnboarding") var isOnboarding: Bool = true
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
 
     var body: some Scene {
         WindowGroup {
-            if isOnboarding {
-                OnboardingView()
-            } else {
-                GameView()
+            Group {
+                if isOnboarding {
+                    OnboardingView()
+                } else {
+                    MainTabView()
+                }
             }
+            .preferredColorScheme(isDarkMode ? .dark : .light)
         }
     }
 }
